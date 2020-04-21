@@ -2,14 +2,18 @@ open util/ordering[State]
 
 -- Initial configuration:
 --
---     1 2 3 4 5
---   +----------    Legend
--- 1 | x x . x x    ======
--- 2 | x x A x x    . = empty
--- 3 | x x x x x    x = square
--- 4 | . x L x .    L = Link
--- 5 | . x x x .    A = StatueA
--- 6 | . . B . .    B = StatueB
+--      -2 -1  0 +1 +2    Legend
+--    +---------------    ===========
+-- -3 |  x  x  .  x  x    . = empty
+-- -2 |  x  o  A  o  x    x = square
+-- -1 |  x  x  x  x  x    o = goal
+--  0 |  .  x  L  x  .    L = Link
+-- +1 |  .  x  x  x  .    A = StatueA
+-- +2 |  .  .  B  .  .    B = StatueB
+--
+-- We use negative integers so that we can have a smaller
+-- bit-width scope (Alloy only supports signed integers).
+-- It's also nice to have Link start at the origin.
 
 -- There are 3 objects: Link and the two statues.
 abstract sig Object {}
@@ -21,11 +25,11 @@ sig Coord {
 	x, y: Int
 }{
     -- Restrict to valid coordinates.
-    x >= 1 and x <= 5
-    y >= 1 and y <= 6
-    not (x = 3 and y = 1)
-    not ((x = 1 or x = 5) and y >= 4)
-    not ((x = 2 or x = 4) and y = 6)
+    x >= -2 and x <= 2
+    y >= -3 and y <= 2
+    not (x = 0 and y = -3)
+    not (x in -2 + 2 and y >= 0)
+    not (x in -1 + 1 and y = 2)
 }
 
 -- There are no duplicate coordinates.
@@ -42,18 +46,15 @@ sig State {
 
 -- Set up the initial state.
 fact {
-    first.pos[Link].x = 3 and first.pos[Link].y = 4
-	first.pos[StatueA].x = 3 and first.pos[StatueA].y = 2
-	first.pos[StatueB].x = 3 and first.pos[StatueB].y = 6
+    first.pos[Link].x = 0 and first.pos[Link].y = 0
+	first.pos[StatueA].x = 0 and first.pos[StatueA].y = -2
+	first.pos[StatueB].x = 0 and first.pos[StatueB].y = 2
 }
 
 -- Define the solution criteria.
 pred solved[s: State] {
-    -- Both are on the second row.
-    s.pos[StatueA].y = 2 and s.pos[StatueB].y = 2
-    -- They are on the 2nd and 4th columns (we don't care which).
-    -- Note: 2 + 4 means the set {2, 4}, not the number 6.
-    (s.pos[StatueA].x + s.pos[StatueB].x) = 2 + 4
+    s.pos[StatueA].x + s.pos[StatueB].x = -1 + 1
+    s.pos[StatueA].y + s.pos[StatueB].y = -2
 }
 
 -- Specify the rules of the puzzle.
@@ -86,15 +87,20 @@ fact {
             Bdy = By'.minus[By]
         {
             -- Link can move left, right, up, or down.
-            (Ldx = -1 and Ldy = 0) or (Ldx = 1 and Ldy = 0) or (Ldx = 0 and Ldy = -1) or (Ldx = 0 and Ldy = 1)
+            Ldx + Ldy = 0 + 1 or Ldx + Ldy = 0 + -1
             (
                 -- StatueA goes in the opposite direction, if possible.
-                ((Adx = Ldx and Ady = Ldy) or (Adx = 0 and Ady = 0 and no c: Coord | c.x = Ax.minus[Ldx] and c.y = Ay.minus[Ldy]))
+                ((Adx = Ldx and Ady = Ldy)
+                 or (Adx + Ady = 0
+                     and no c: Coord | c.x = Ax.minus[Ldx] and c.y = Ay.minus[Ldy]))
+                and
                 -- StatueB goes in the same direction, if possible.
-                and ((Bdx = Ldx and Bdy = Ldy) or (Bdx = 0 and Bdy = 0 and no c: Coord | c.x = Bx.plus[Ldx] and c.y = By.plus[Ldy]))
+                ((Bdx = Ldx and Bdy = Ldy)
+                 or (Bdx + Bdy = 0
+                     and no c: Coord | c.x = Bx.plus[Ldx] and c.y = By.plus[Ldy]))
             ) or (
                 -- Or, the statues don't move because they bang into each other.
-                Adx = 0 and Ady = 0 and Bdx = 0 and Bdy = 0
+                Adx + Ady + Bdx + Bdy = 0
                 and Ax.minus[Ldx] = Bx.plus[Ldx]
                 and Ay.minus[Ldy] = By.plus[Ldy]
             )
@@ -102,4 +108,5 @@ fact {
     }
 }
 
-run { solved[last] } for 4 Int, exactly 21 Coord, exactly 13 State
+-- Solve the puzzle.
+run { solved[last] } for 3 Int, exactly 21 Coord, exactly 13 State
