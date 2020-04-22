@@ -4,12 +4,12 @@ open util/ordering[State]
 --
 --      -2 -1  0 +1 +2    Legend
 --    +---------------    ===========
--- -3 |  x  x  .  x  x    . = empty
--- -2 |  x  o  A  o  x    x = square
--- -1 |  x  x  x  x  x    o = goal
---  0 |  .  x  L  x  .    L = Link
--- +1 |  .  x  x  x  .    A = StatueA
--- +2 |  .  .  B  .  .    B = StatueB
+-- -3 |  .  .     .  .    . = square
+-- -2 |  .  x  A  x  .    x = goal
+-- -1 |  .  .  .  .  .    L = Link
+--  0 |     .  L  .       A = StatueA
+-- +1 |     .  .  .       B = StatueB
+-- +2 |        B
 --
 -- We use negative integers so that we can have a smaller
 -- bit-width scope (Alloy only supports signed integers).

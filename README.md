@@ -28,6 +28,8 @@ This is the Guardian Statue Puzzle from Twilight Princess. You have to solve it 
 
 All walkthroughs (example [one](https://www.zeldadungeon.net/Zelda11Guardian.php), [two](https://zeldauniverse.net/guides/twilight-princess/sidequests/guardian-statue-puzzle/)) take exactly 13 steps. As expected, Alloy produces no instance until we raise the scope to `for exactly 13 State`.
 
+[![asciicast](https://asciinema.org/a/xGo22vveHKm4QXzV4cHpq9tbX.svg)](https://asciinema.org/a/xGo22vveHKm4QXzV4cHpq9tbX)
+
 ## License
 
 © 2020 Mitchell Kember
