@@ -15,7 +15,7 @@ one sig Red, Blue extends Color {}
 -- A coordinate is an (x,y) pair on the grid.
 -- The x-axis is horizontal and the y-axis is vertical.
 sig Coord {
-	x, y: Int
+    x, y: Int
 }{
     -- Restrict to valid coordinates.
     x >= -1 and x <= 1
@@ -24,7 +24,7 @@ sig Coord {
 
 -- There are no duplicate coordinates.
 fact {
-	no c, c': Coord | c != c' and c.x = c'.x and c.y = c'.y
+    no c, c': Coord | c != c' and c.x = c'.x and c.y = c'.y
 }
 
 -- Each state maps the coordinates to colors.

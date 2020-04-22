@@ -22,7 +22,7 @@ one sig Link, StatueA, StatueB extends Object {}
 -- A coordinate is an (x,y) pair on the grid.
 -- The x-axis is horizontal and the y-axis is vertical.
 sig Coord {
-	x, y: Int
+    x, y: Int
 }{
     -- Restrict to valid coordinates.
     x >= -2 and x <= 2
@@ -34,21 +34,21 @@ sig Coord {
 
 -- There are no duplicate coordinates.
 fact {
-	no c, c': Coord | c != c' and c.x = c'.x and c.y = c'.y
+    no c, c': Coord | c != c' and c.x = c'.x and c.y = c'.y
 }
 
 -- Each state maps the objects to coordinates.
 sig State {
     -- `Object lone ->` means no two objects are at the same coordinate.
     -- `-> one Coord` means each object occupies exactly one coordinate.
-	pos: Object lone -> one Coord
+    pos: Object lone -> one Coord
 }
 
 -- Set up the initial state.
 fact {
     first.pos[Link].x = 0 and first.pos[Link].y = 0
-	first.pos[StatueA].x = 0 and first.pos[StatueA].y = -2
-	first.pos[StatueB].x = 0 and first.pos[StatueB].y = 2
+    first.pos[StatueA].x = 0 and first.pos[StatueA].y = -2
+    first.pos[StatueB].x = 0 and first.pos[StatueB].y = 2
 }
 
 -- Define the solution criteria.
