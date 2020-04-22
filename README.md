@@ -12,11 +12,9 @@ First, you will need to [download Alloy][download]. On macOS, you can use `brew 
 
 ## Alloy notes
 
-Keep these common stumbling blocks in mind:
-
 - The expression `1 + 2` means the set containing 1 and 2, not the integer 3. To add numbers, you have to use the built-in function `plus`. For example, `1.plus[2] = 3` is true.
 
-- Scopes on `Int` work differently from other sets. `For 4 Int` means using 4-bit signed integers, so from -8 to +7, which gives 16 possible values in total.
+- Scopes on `Int` work differently from other sets. The scope `for 4 Int` means using 4-bit signed integers, so from -8 to +7, which gives 16 possible values in total.
 
 ## Puzzles
 
@@ -29,6 +27,16 @@ This is the Guardian Statue Puzzle from Twilight Princess. You have to solve it 
 All walkthroughs (example [one](https://www.zeldadungeon.net/Zelda11Guardian.php), [two](https://zeldauniverse.net/guides/twilight-princess/sidequests/guardian-statue-puzzle/)) take exactly 13 steps. As expected, Alloy produces no instance until we raise the scope to `for exactly 13 State`.
 
 [![asciicast](https://asciinema.org/a/322663.svg)](https://asciinema.org/a/322663)
+
+### Mutoh Tiles
+
+This is the Xs and Os puzzle in Phantom Hourglass. There are a few of them in Mutoh's Temple.
+
+![Mutoh Tiles puzzle screenshot](mutoh-tiles.png)
+
+This puzzle is actually really easy because you can hit the hammer on tiles outside the puzzle as well (which allows you to flip corners individually). To make the puzzle more interesting, I modelled it assuming you can only hit the 9 tiles. The shortest solution takes 9 steps.
+
+[![asciicast](https://asciinema.org/a/322684.svg)](https://asciinema.org/a/322684)
 
 ## License
 
