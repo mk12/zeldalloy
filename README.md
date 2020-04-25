@@ -22,17 +22,23 @@ First, you will need to [download Alloy][download]. On macOS, you can use `brew 
 
 This is the Guardian Statue Puzzle from Twilight Princess. You have to solve it in the Sacred Grove before getting the Master Sword.
 
-![Sacred Grove puzzle screenshot](sacred-grove.jpg)
+![Sacred Grove puzzle screenshot](sacred-grove/screenshot.jpg)
 
 All walkthroughs (example [one](https://www.zeldadungeon.net/Zelda11Guardian.php), [two](https://zeldauniverse.net/guides/twilight-princess/sidequests/guardian-statue-puzzle/)) take exactly 13 steps. As expected, Alloy produces no instance until we raise the scope to `for exactly 13 State`.
 
 [![asciicast](https://asciinema.org/a/322663.svg)](https://asciinema.org/a/322663)
 
+### Snowpeak Blocks
+
+This is the sliding block puzzle from Twilight Princess. There are two of them in the Snowpeak Ruins dungeon.
+
+![Snowpeak Blocks puzzle screenshot](snowpeak-blocks/screenshot.jpg)
+
 ### Mutoh Tiles
 
 This is the Xs and Os puzzle in Phantom Hourglass. There are a few of them in Mutoh's Temple.
 
-![Mutoh Tiles puzzle screenshot](mutoh-tiles.png)
+![Mutoh Tiles puzzle screenshot](mutoh-tiles/screenshot.png)
 
 This puzzle is actually really easy because you can hit the hammer on tiles outside the puzzle as well (which allows you to flip corners individually). To make the puzzle more interesting, I modelled it assuming you can only hit the 9 tiles. The shortest solution takes 9 steps.
 

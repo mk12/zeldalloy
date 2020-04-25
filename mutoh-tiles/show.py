@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import pathlib, os, sys
+sys.path.append(os.path.relpath(pathlib.Path(__file__).resolve().parent.parent))
+
 from common import CoordPuzzle, default_main
 
 

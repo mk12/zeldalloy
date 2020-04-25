@@ -114,6 +114,7 @@ class Puzzle(ABC):
 
     def __init__(self, instance: Instance):
         self.instance = instance
+        self.num_states = len(self.instance["this/State"])
         self.setup()
 
     def setup(self):
@@ -121,8 +122,7 @@ class Puzzle(ABC):
 
     def states(self) -> Iterator[Tuple[int, State]]:
         for s in sorted(self.instance["this/State"]):
-            index = s[1] + 1  # convert to 1-based
-            yield index, self.build_state(s)
+            yield s[1], self.build_state(s)
 
     @abstractmethod
     def build_state(self, s: Atom) -> State:
@@ -130,17 +130,26 @@ class Puzzle(ABC):
 
     def dump(self):
         for index, state in self.states():
-            print(f"{'-' * 80}\nState {index}\n")
+            print(f"{'-' * 80}\n{self.state_title(index)}\n")
             self.print_state(state)
             print()
 
     def interactive(self):
         with alternate_screen():
             for index, state in self.states():
-                print(f"State {index}\n")
+                print(self.state_title(index), end="\n\n")
                 self.print_state(state)
                 input()
                 clear_screen()
+
+    def state_title(self, index: int) -> str:
+        # Display as one-based number.
+        title = f"State {index + 1}"
+        if index == 0:
+            return f"{title} (initial)"
+        if index == self.num_states - 1:
+            return f"{title} (final)"
+        return title
 
     @abstractmethod
     def print_state(self, state: State):
