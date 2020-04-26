@@ -22,7 +22,7 @@ The second approach is usually much better, since it prints the two-dimensional 
 
 - [Mutoh's Temple Xs and Os tiles](mutoh-tiles)
 
-## Oracle of Ages
+### Oracle of Ages
 
 - [Crown Dungeon synchronized statues](crown-statues)
 
