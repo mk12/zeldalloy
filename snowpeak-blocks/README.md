@@ -34,29 +34,27 @@ On the first visit to this room, there are two blocks, two obstacles, and one sw
 
 ## Configuration 2
 
-The two obstacles in Configuration 1 were actually a frozen block and switch. When you return to the room later in the dungeon, you use the ball and chain to break the ice. There are now three blocks, zero obstacles, and two switches. One of the blocks starts off on the bottom switch (from the solution of Setup 1).
+The two obstacles in Configuration 1 were actually a frozen block and switch. When you return to the room later in the dungeon, you use the ball and chain to break the ice. There are now three blocks, zero obstacles, and one switch (you only need to press the new one).
 
-| __B__ | __.__ |  __.__  | __.__ | __.__ |
-| :---: | :---: | :-----: | :---: | :---: |
-| __.__ | __.__ |  __.__  | __.__ | __.__ |
-| __.__ | __.__ |  __x__  | __.__ | __.__ |
-| __.__ | __.__ |  __.__  | __.__ |       |
-| __.__ | __.__ |  __.__  | __B__ |       |
-|       |       | __B/x__ |       |       |
+| __B__ | __.__ | __.__ | __.__ | __.__ |
+| :---: | :---: | :---: | :---: | :---: |
+| __.__ | __.__ | __.__ | __.__ | __.__ |
+| __.__ | __.__ | __x__ | __.__ | __.__ |
+| __.__ | __.__ | __.__ | __.__ |       |
+| __.__ | __.__ | __.__ | __B__ |       |
+|       |       | __B__ |       |       |
 
 ### Solution
 
-**Note**: I first modelled this puzzle using the mirrored Wii orientation, before standardizing on the GameCube orientation. The problems are symmetric, but the Wii version only took 8s to solve, rather than 88s. SAT solver performance is unpredictable!
+| Solution              | Steps | Notes                                           |
+| --------------------- | ----: | ----------------------------------------------- |
+| Optimal               |     9 | 8.0s (MiniSat, 2.3 GHz Quad-Core Intel Core i7) |
+| [Zelda Dungeon][zd2]  |     9 | **B1** N; **B2** S, E, N; **B1** W, S, E, N     |
+| [Zelda Universe][zu2] |     9 | Same as Zelda Dungeon (but mirrored for Wii)    |
 
-| Solution              | Steps | Notes                                            |
-| --------------------- | ----: | ------------------------------------------------ |
-| Optimal               |    13 | 87.8s (MiniSat, 2.3 GHz Quad-Core Intel Core i7) |
-| [Zelda Dungeon][zd2]  |       |                                                  |
-| [Zelda Universe][zu2] |       |                                                  |
-
-[![asciicast](https://asciinema.org/a/324034.svg)](https://asciinema.org/a/324034?size=big)
+[![asciicast](https://asciinema.org/a/324039.svg)](https://asciinema.org/a/324039?size=big)
 
 [zd1]: https://www.zeldadungeon.net/twilight-princess-walkthrough/snowpeak-ruins/#c15_2
 [zu1]: https://zeldauniverse.net/guides/twilight-princess/walkthrough/chapter-14-snowpeak-ruins/
-[zd2]: https://
-[zu2]: https://
+[zd2]: [https://](https://www.zeldadungeon.net/twilight-princess-walkthrough/snowpeak-ruins/#c15_6)
+[zu2]: https://zeldauniverse.net/guides/twilight-princess/walkthrough/chapter-14-snowpeak-ruins/

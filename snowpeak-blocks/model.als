@@ -76,16 +76,15 @@ pred puzzle1 {
 -- -1 | .  .  x  .  .    x = goal
 --  0 | .  .  .  .  .    B = block
 -- +1 | .  .  .  B
--- +2 |      B/x
+-- +2 |       B
 --
 pred puzzle2 {
     -- Initial block positions.
     some b: Block | first.pos[b].x = -2 and first.pos[b].y = -3
     some b: Block | first.pos[b].x = 1 and first.pos[b].y = 1
     some b: Block | first.pos[b].x = 0 and first.pos[b].y = 2
-    -- Solution: both switches are pressed.
+    -- Solution: the switch is pressed.
     some b: Block | last.pos[b].x = 0 and last.pos[b].y = -1
-    some b: Block | last.pos[b].x = 0 and last.pos[b].y = 2
 }
 
 -- Helper predicate to say x is between a (exclusive) and b (inclusive).
@@ -147,4 +146,4 @@ fact {
 -- Note: Although [-3,2] fits in 3 bits, we need 4 bits for the
 -- "normalized displacement" subtractions (can reach 2 - (-3) = 5).
 run { puzzle1 } for 4 Int, exactly 25 Coord, exactly 2 Block, exactly 2 Obstacle, exactly 6 State
-run { puzzle2 } for 4 Int, exactly 25 Coord, exactly 3 Block, exactly 0 Obstacle, exactly 11 State
+run { puzzle2 } for 4 Int, exactly 25 Coord, exactly 3 Block, exactly 0 Obstacle, exactly 9 State
