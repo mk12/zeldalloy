@@ -18,14 +18,18 @@ The second approach is usually much better, since it prints the two-dimensional 
 
 ## Puzzles
 
-### Twilight Princess
-
-- [Sacred Grove Guardian Statues](sacred-grove)
-- [Snowpeak Ruins sliding blocks](snowpeak-blocks)
-
 ### Phantom Hourglass
 
 - [Mutoh's Temple Xs and Os tiles](mutoh-tiles)
+
+## Oracle of Ages
+
+- [Crown Dungeon synchronized statues](crown-statues)
+
+### Twilight Princess
+
+- [Sacred Grove guardian statues](sacred-grove)
+- [Snowpeak Ruins sliding blocks](snowpeak-blocks)
 
 ## Organization
 

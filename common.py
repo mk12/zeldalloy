@@ -186,26 +186,39 @@ class CoordPuzzle(Puzzle):
         }
 
         sig State {
-            -- (1)
+            -- (1) state_to_coord
+            NAME: Coord
+            -- (2) object_to_coord
             NAME: lone OBJECT -> one Coord
-            -- (2)
+            -- (3) coord_to_object
             NAME: Coord -> one OBJECT
         }
 
-    The NAME is specified by object_to_cood for (1), or coord_to_object for (2).
-    The OBJECT can be named anything.
+        sig STATIC {
+            -- (4): static_to_coord
+            NAME: Coord
+        }
     """
 
     # Inclusive ranges.
     x_range: Tuple[int, int]
     y_range: Tuple[int, int]
 
-    # Only one of these should be set.
-    object_to_coord: str = ""
-    coord_to_object: str = ""
+    # Fake objects.
+    fake: Dict[Tuple[int, int], Atom] = {}
 
-    # Optional.
+    # Static -> Coord. This should be the full name, e.g. "MyStatic<:pos".
     static_to_coord: str = ""
+
+    # State -> Coord. Implicitly prefixed by "State<:".
+    state_to_coord: str = ""
+    state_to_coord_atom: Atom = ""
+
+    # State -> Object -> Coord. Implicitly prefixed by "State<:".
+    object_to_coord: str = ""
+
+    # State -> Coord -> Object. Implicitly prefixed by "State<:".
+    coord_to_object: str = ""
 
     def setup(self):
         coord = self.instance["this/Coord"]
@@ -222,21 +235,32 @@ class CoordPuzzle(Puzzle):
                 }
 
     def build_state(self, s: Atom) -> State:
+        state = {**self.fake, **self.static}
+        if self.state_to_coord:
+            state_coord = self.instance[f"this/State<:{self.state_to_coord}"]
+            if s in state_coord:
+                assert isinstance(state_coord, dict)
+                coord = state_coord[s]
+                assert isinstance(coord, set)
+                atom = self.state_to_coord_atom
+                state.update({self.coords[the(coord)]: atom for coord in coord})
         if self.object_to_coord:
             state_obj_coord = self.instance[f"this/State<:{self.object_to_coord}"]
             assert isinstance(state_obj_coord, dict)
             obj_coord = state_obj_coord[s]
             assert isinstance(obj_coord, dict)
-            state = {self.coords[the(coord)]: obj for obj, coord in obj_coord.items()}
-        elif self.coord_to_object:
+            state.update(
+                {self.coords[the(coord)]: obj for obj, coord in obj_coord.items()}
+            )
+        if self.coord_to_object:
             state_coord_obj = self.instance[f"this/State<:{self.coord_to_object}"]
             assert isinstance(state_coord_obj, dict)
             coord_obj = state_coord_obj[s]
             assert isinstance(coord_obj, dict)
-            state = {self.coords[coord]: the(obj) for coord, obj in coord_obj.items()}
-        else:
-            assert False
-        return {**self.static, **state}
+            state.update(
+                {self.coords[coord]: the(obj) for coord, obj in coord_obj.items()}
+            )
+        return state
 
     def print_state(self, state: State):
         p = lambda s: print(s, end="")
@@ -251,10 +275,10 @@ class CoordPuzzle(Puzzle):
                     p(".")
                 else:
                     p(" ")
-                if x != 2:
+                if x != xs[1] - 1:
                     p(" ")
             print()
 
     @abstractmethod
-    def object_char(self, obj: Any) -> str:
+    def object_char(self, obj: Atom) -> str:
         """Return the character to use for obj."""
