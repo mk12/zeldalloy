@@ -1,0 +1,3 @@
+black
+mypy
+pylint>=2,<3

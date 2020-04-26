@@ -88,6 +88,9 @@ fact {
         {
             -- Link can move left, right, up, or down.
             Ldx + Ldy = 0 + 1 or Ldx + Ldy = 0 + -1
+            -- Link cannot move into one of the statues.
+            not (Lx' = Ax and Ly' = Ay)
+            not (Lx' = Bx and Ly' = By)
             (
                 -- StatueA goes in the opposite direction, if possible.
                 ((Adx = Ldx and Ady = Ldy)

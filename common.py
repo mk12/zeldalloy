@@ -1,18 +1,29 @@
+"""Common code for all puzzle scripts."""
+
 from __future__ import annotations
 
 import argparse
 import contextlib
 import re
-import sys
 from abc import ABC, abstractmethod
-from typing import Any, Collection, Dict, Iterator, Set, TextIO, Tuple, Type, Union
-
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    Iterator,
+    Set,
+    TextIO,
+    Tuple,
+    Type,
+    Union,
+)
 
 # Either an integer (for the Int set) or an atom like Foo or Foo$0.
 Atom = Union[int, str, Tuple[str, int]]
 
 # An n-ary relation represented as a nested dictionary with sets as leaves.
-Relation = Union[Set[Atom], Dict[str, Any]]
+# This is really a recursive type: Any should be Relation.
+Relation = Union[Set[Atom], Dict[Atom, Any]]
 
 # A group of named sets/relations.
 Instance = Dict[str, Relation]
@@ -45,9 +56,9 @@ def parse_atom(string: str) -> Atom:
     return name, int(number)
 
 
-def build_relation(vals: Collection[str]) -> Relation:
+def build_relation(vals: Iterable[Iterable[Atom]]) -> Relation:
     """Build a nested dict/set from a list of tuples in a relation."""
-    root = {}
+    root: Dict[Atom, Any] = {}
     for v in vals:
         parent = root
         for x in v:
@@ -118,31 +129,39 @@ class Puzzle(ABC):
         self.setup()
 
     def setup(self):
-        ...
+        """Puzzle subclasses can perform setup here."""
 
     def states(self) -> Iterator[Tuple[int, State]]:
+        """Yield (index, state) tuples in order."""
         for s in sorted(self.instance["this/State"]):
+            assert isinstance(s, tuple)
             yield s[1], self.build_state(s)
 
     @abstractmethod
     def build_state(self, s: Atom) -> State:
-        ...
+        """Convert a State atom to a domain state object."""
 
     def dump(self):
+        """Dump all states to stdout."""
         for index, state in self.states():
             print(f"{'-' * 80}\n{self.state_title(index)}\n")
             self.print_state(state)
             print()
 
     def interactive(self):
-        with alternate_screen():
-            for index, state in self.states():
-                print(self.state_title(index), end="\n\n")
-                self.print_state(state)
-                input()
-                clear_screen()
+        """Print states interactively on the alternate screen."""
+        try:
+            with alternate_screen():
+                for index, state in self.states():
+                    clear_screen()
+                    print(self.state_title(index), end="\n\n")
+                    self.print_state(state)
+                    input()
+        except KeyboardInterrupt:
+            pass
 
     def state_title(self, index: int) -> str:
+        """Generate a title for a state index."""
         # Display as one-based number.
         title = f"State {index + 1}"
         if index == 0:
@@ -153,7 +172,7 @@ class Puzzle(ABC):
 
     @abstractmethod
     def print_state(self, state: State):
-        ...
+        """Print an individual state to stdout."""
 
 
 class CoordPuzzle(Puzzle):
@@ -204,10 +223,16 @@ class CoordPuzzle(Puzzle):
 
     def build_state(self, s: Atom) -> State:
         if self.object_to_coord:
-            obj_coord = self.instance[f"this/State<:{self.object_to_coord}"][s]
+            state_obj_coord = self.instance[f"this/State<:{self.object_to_coord}"]
+            assert isinstance(state_obj_coord, dict)
+            obj_coord = state_obj_coord[s]
+            assert isinstance(obj_coord, dict)
             state = {self.coords[the(coord)]: obj for obj, coord in obj_coord.items()}
         elif self.coord_to_object:
-            coord_obj = self.instance[f"this/State<:{self.coord_to_object}"][s]
+            state_coord_obj = self.instance[f"this/State<:{self.coord_to_object}"]
+            assert isinstance(state_coord_obj, dict)
+            coord_obj = state_coord_obj[s]
+            assert isinstance(coord_obj, dict)
             state = {self.coords[coord]: the(obj) for coord, obj in coord_obj.items()}
         else:
             assert False
@@ -232,4 +257,4 @@ class CoordPuzzle(Puzzle):
 
     @abstractmethod
     def object_char(self, obj: Any) -> str:
-        ...
+        """Return the character to use for obj."""

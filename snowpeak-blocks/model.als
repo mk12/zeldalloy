@@ -8,7 +8,7 @@ open util/ordering[State]
 -- -2 | .  .  .  .  .    . = ice
 -- -1 | .  .  .  .  .
 --  0 | .  .  .  .  .
--- +1 |    .  .  .  .
+-- +1 | .  .  .  .
 -- +2 |       .
 
 -- Each puzzle has a set of blocks.
@@ -29,7 +29,7 @@ sig Coord {
     -- Restrict to valid coordinates.
     x >= -2 and x <= 2
     y >= -3 and y <= 2
-    not (x = -2 and y = 1)
+    not (x = 2 and y = 1)
     not (x != 0 and y = 2)
 }
 
@@ -49,20 +49,20 @@ sig State {
 --
 --     -2 -1  0 +1 +2
 --    +--------------    Legend
--- -3 | .  .  .  B  o    ========
+-- -3 | o  .  .  .  B    ========
 -- -2 | .  .  .  .  .    . = ice
 -- -1 | .  .  o  .  .    x = goal
 --  0 | .  .  .  .  .    B = block
--- +1 |    .  .  .  B    o = obstacle
+-- +1 | B  .  .  .       o = obstacle
 -- +2 |       x
 --
 pred puzzle1 {
     -- Obstacle positions.
-    some o: Obstacle | o.pos.x = 2 and o.pos.y = -3
+    some o: Obstacle | o.pos.x = -2 and o.pos.y = -3
     some o: Obstacle | o.pos.x = 0 and o.pos.y = -1
     -- Initial block positions.
-    some b: Block | first.pos[b].x = 1 and first.pos[b].y = -3
-    some b: Block | first.pos[b].x = 2 and first.pos[b].y = 1
+    some b: Block | first.pos[b].x = 2 and first.pos[b].y = -3
+    some b: Block | first.pos[b].x = -2 and first.pos[b].y = 1
     -- Solution: the switch is pressed.
     some b: Block | last.pos[b].x = 0 and last.pos[b].y = 2
 }
@@ -71,17 +71,17 @@ pred puzzle1 {
 --
 --     -2 -1  0 +1 +2
 --    +--------------    Legend
--- -3 | .  .  .  .  B    ========
+-- -3 | B  .  .  .  .    ========
 -- -2 | .  .  .  .  .    . = ice
 -- -1 | .  .  x  .  .    x = goal
 --  0 | .  .  .  .  .    B = block
--- +1 |    B  .  .  .
+-- +1 | .  .  .  B
 -- +2 |      B/x
 --
 pred puzzle2 {
     -- Initial block positions.
-    some b: Block | first.pos[b].x = 2 and first.pos[b].y = -3
-    some b: Block | first.pos[b].x = -1 and first.pos[b].y = 1
+    some b: Block | first.pos[b].x = -2 and first.pos[b].y = -3
+    some b: Block | first.pos[b].x = 1 and first.pos[b].y = 1
     some b: Block | first.pos[b].x = 0 and first.pos[b].y = 2
     -- Solution: both switches are pressed.
     some b: Block | last.pos[b].x = 0 and last.pos[b].y = -1
@@ -146,5 +146,5 @@ fact {
 -- Solve the puzzles.
 -- Note: Although [-3,2] fits in 3 bits, we need 4 bits for the
 -- "normalized displacement" subtractions (can reach 2 - (-3) = 5).
-run { puzzle1 } for 4 Int, exactly 25 Coord, exactly 2 Block, exactly 2 Obstacle, exactly 5 State
+run { puzzle1 } for 4 Int, exactly 25 Coord, exactly 2 Block, exactly 2 Obstacle, exactly 6 State
 run { puzzle2 } for 4 Int, exactly 25 Coord, exactly 3 Block, exactly 0 Obstacle, exactly 11 State
