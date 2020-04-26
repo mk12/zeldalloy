@@ -56,5 +56,5 @@ The two obstacles in Configuration 1 were actually a frozen block and switch. Wh
 
 [zd1]: https://www.zeldadungeon.net/twilight-princess-walkthrough/snowpeak-ruins/#c15_2
 [zu1]: https://zeldauniverse.net/guides/twilight-princess/walkthrough/chapter-14-snowpeak-ruins/
-[zd2]: [https://](https://www.zeldadungeon.net/twilight-princess-walkthrough/snowpeak-ruins/#c15_6)
+[zd2]: https://www.zeldadungeon.net/twilight-princess-walkthrough/snowpeak-ruins/#c15_6
 [zu2]: https://zeldauniverse.net/guides/twilight-princess/walkthrough/chapter-14-snowpeak-ruins/
